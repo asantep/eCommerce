@@ -1,4 +1,4 @@
-# eCommerce
+# eCommerce - edYoda Projects
 1 -> HTML
 2 -> CSS(3)
 3 -> JavaScript
