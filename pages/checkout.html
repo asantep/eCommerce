@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checkout Order - Ecommerce</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700|Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav id="top-bar">
+            <div id="shoplane-logo">
+                <a href="/index.html">
+                    <span class="l-shop">SHOP</span><span class="l-lane">LANE</span> 
+                </a>                   
+            </div>
+            <div id="shoplane-links">
+                <a>CLOTHING</a>
+                <a>ACCESSORIES</a>
+            </div>
+            <div id="shoplane-search">                
+            <input type="text" placeholder="Search for Clothing and Accessories">
+                <i class="material-icons">search</i>
+            </div>
+            <div id="shoplane-details">
+            <i class="material-icons">shopping_cart</i>
+                <span id='cart_count'><strong>0</strong></span>
+                <img src="/images/user.jpg" alt="user">
+            </div>
+        </nav>
+    </header>
+    <main id="checkout_wrapper">
+        <h3>Checkout</h3>
+        <div id="check_container">
+            <section id="checked_items">
+                <h4 id="total_qty">
+                    Total Items:
+                </h4>
+            </section>
+            <section id="items_amount">
+                <h4>Total Amount</h4>
+                <span class="amt_currency">Amount Rs:</span><span id="total_amount"></span>
+                <div id="submit_order">
+                    <button type="submit" id="place_order" class="place_order">Place Order</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer id="footer">
+        <div id="online-store">
+            <p class="footer-head">ONLINE STORE</p>
+            <p class="footer-tags">MEN CLOTHING</p>
+            <p class="footer-tags">WOMEN CLOTHING</p>
+            <p class="footer-tags">MEN ACCESSORIES</p>
+            <p class="footer-tags">WOMEN ACCESSORIES</p>
+        </div>
+        <div id="helpful-links">
+            <p class="footer-head">HELPFUL LINKS</p>
+            <p class="footer-tags">HOME</p>
+            <p class="footer-tags">ABOUT</p>
+            <p class="footer-tags">CONTACT</p>
+        </div>
+        <div id="partners">
+            <p class="footer-head">PARTNERS</p>
+            <p class="footer-tags">ZARA</p>
+            <p class="footer-tags">PANTALOONS</p>
+            <p class="footer-tags">LEVIS</p>
+            <p class="footer-tags">UCB</p>
+            <p class="footer-tags">+ MANY MORE</p>
+        </div>
+        <div id="address">
+            <p class="footer-head">ADDRESS</p>
+            <p class="footer-tags">BUILDING 101</p>
+            <p class="footer-tags">CENTRAL AVENUE</p>
+            <p class="footer-tags">LA - 902722</p>
+            <p class="footer-tags">UNITED STATES</p>
+        </div>
+        <div id="edyoda-logo">
+            <img src="https://i.imgur.com/OKAY6Fl.png" alt="edyoda-projects-logo">
+        </div>
+    </footer>
+    <script src="/js/checkout.js"></script>
+</body>
+</html>
