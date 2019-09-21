@@ -2,88 +2,73 @@
 
 var queryString = location.search.split('?');
 var productId = queryString[1];
+var responseText = null;
 
 var img_preview = $('#preview');
-var imgPreview = document.createElement('img');
 var preview_details = document.getElementById('preview-details');
 var cart_button = document.getElementById('addToCart');
 var cart_count = document.getElementById('cart_count');
-var products = document.getElementById('product_photo');
+var product_photos = $('.product_photo');
 var cart_icon = $('.material-icons');
 
-cart_button.addEventListener('click',()=>{
-    let counter =  parseInt(cart_count.innerText);
-    cart_count.innerText = ++counter;
-});
-cart_icon.click(()=>{
-    document.location.href = '/pages/checkout.html';
-});
-
-function updateProductImage(newSrc) {
-    
-}
-
 function createProductPreviewNode(response){
-    var image = document.createElement('div');
-    image.className = 'img_preview';
-    imgPreview.src = response.preview;
-    image.appendChild(imgPreview);
+    var image = $('.img_preview');
+    var imgPreview = $('#imgPre');
+    imgPreview.attr('src',response.preview);
+    image.append(imgPreview);
     return image;
 }
 
-function createProductDetailNode(response) {
-    var allDetails = document.createElement('div');
-    allDetails.className = 'product_detail';
+function createImageNode(pos,scr) {
+    var productPhotos = document.createElement('div');
+    productPhotos.className = 'product_photo';
+    let photo = document.createElement('img');
+    photo.src = scr;
+    if(pos === 0){
+        photo.classList.add('active-photo');
+    }
+    photo.onclick = function (e) {
+        e.preventDefault();
+        $('.product_photo img').removeClass('active-photo');
+        photo.classList.add('active-photo');
+        $('#imgPre').attr('src',scr);
+    }
+    productPhotos.appendChild(photo);
+    return productPhotos;
+}
 
-    var productName = document.createElement('h3');
-    productName.className = 'product_name';
-    let productNameText = document.createTextNode(response.name);
-    productName.appendChild(productNameText);
+function createProductDetailNode(response) {
+    var allDetails = document.getElementById('product_detail');
+
+    var productName = document.getElementById('product_name');
+    productName.innerText = response.name;
     allDetails.appendChild(productName);
 
-    var productBrand = document.createElement('span');
-    productBrand.className = 'product_brand';
-    let productBrandText = document.createTextNode(response.brand);
-    productBrand.appendChild(productBrandText);
+    var productBrand = document.getElementById('product_brand');
+    productBrand.innerText = response.brand;
     allDetails.appendChild(productBrand);
 
-    var productPrice = document.createElement('p');
-    productPrice.className = 'product_price';
-    let productPriceText = document.createTextNode('Price: Rs '+response.price);
-    productPrice.appendChild(productPriceText);
-    allDetails.appendChild(productPrice);
+    var product_price = document.getElementById('product_price');
+    var productPrice = document.getElementById('price');
+    productPrice.innerText = response.price;
+    product_price.appendChild(productPrice)
+    allDetails.appendChild(product_price);
 
-    var descriptionTag = document.createElement('h4');
-    descriptionTag.className = 'tag_name';
-    var tagText = document.createTextNode('Description');
-    descriptionTag.appendChild(tagText);
-    allDetails.appendChild(descriptionTag);
+    var tag_name = document.getElementById('tag_name');
+    var productDescription = document.getElementById('description_text');
+    productDescription.innerText = response.description; 
+    tag_name.appendChild(productDescription);  
+    allDetails.appendChild(tag_name);   
 
-    var productDescription = document.createElement('p');
-    productDescription.className = 'description_text';
-    let productDescriptionText = document.createTextNode(response.description);
-    productDescription.appendChild(productDescriptionText);
-    allDetails.appendChild(productDescription);
-
-    var productPreviewTag = document.createElement('h4');
-    productPreviewTag.className = 'previewTag';
-    var previewTagText = document.createTextNode('Product Preview');
-    productPreviewTag.appendChild(previewTagText);
-    allDetails.appendChild(productPreviewTag);
-    
-    var productPhotos = document.createElement('div');
-    productPhotos.id = 'product_photo';
+    var previewTag = document.getElementById('previewTag');
+    var photo_wrapper = document.getElementById('photo_wrapper');
     for (let i = 0; i < response.photos.length; i++) {
         const element = response.photos[i];
-        let photo_wrapper = document.createElement('div');
-        //photo_wrapper.className = 'photos'
-        let photo = document.createElement('img')
-        //photo.className = 'photos';
-        photo.src = element;
-        photo_wrapper.appendChild(photo);
-        productPhotos.appendChild(photo_wrapper);
-        allDetails.appendChild(productPhotos);
-    }    
+
+        photo_wrapper.appendChild(createImageNode(i,element));
+        previewTag.appendChild(photo_wrapper);
+        allDetails.appendChild(previewTag);
+    }
 
     return allDetails;
 }
@@ -94,7 +79,7 @@ function getProductDetails() {
     http.onreadystatechange = function(){
         if(this.readyState === 4){
             if (this.status === 200) {
-                var responseText = JSON.parse(this.responseText);
+                responseText = JSON.parse(this.responseText);
                 img_preview.append(createProductPreviewNode(responseText)); 
                 preview_details.insertBefore(createProductDetailNode(responseText),cart_button);                                           
             } else {
@@ -107,3 +92,36 @@ function getProductDetails() {
 }
 
 getProductDetails();
+
+cart_button.addEventListener('click',()=>{
+    //let counter =  parseInt(cart_count.innerText);
+
+    var productList = window.localStorage.getItem('product-list');
+    productList = productList === null || productList === '' ? [] : productList;
+    productList = productList.length > 0 ? JSON.parse(productList) : [];
+    var locatedAt = -1;
+    for (var i = 0; i < productList.length; i++) {
+        const element = parseInt(productList[i].id);
+        if (element == parseInt(responseText.id)) {
+            locatedAt = i;
+        }        
+    }
+    
+    if (locatedAt > -1) {
+        productList[locatedAt].count =  productList[locatedAt].count + 1;
+        window.localStorage.setItem('product-list', JSON.stringify(productList));        
+    } else {
+        responseText.count = 1;
+        productList.push(responseText);
+        window.localStorage.setItem('product-list', JSON.stringify(productList));
+    }
+    var totalCount = 0;
+    for (let i = 0; i < productList.length; i++) {
+        const element = productList[i].count; 
+        totalCount = totalCount + productList.length;       
+    }
+    cart_count.innerText = totalCount;
+});
+cart_icon.click(()=>{
+    document.location.href = '/pages/checkout.html';
+});

@@ -37,9 +37,21 @@
         </nav>
     </header>
     <main id="container">
-        <aside id="preview">            
+        <aside id="preview">  
+            <div class="img_preview">
+                <img id="imgPre" src="/images/default-image.jpg" alt="default-image">
+            </div>          
         </aside>
         <section id="preview-details">
+            <div id="product_detail">
+                <h3 id="product_name">Product Name</h3>
+                <span id="product_brand">Product Brand</span>
+                <p id="product_price">Price: Rs <span id="price">XXXX</span></p>
+                <h4 id="tag_name">Description</h4>
+                <p id="description_text">Product Description</p>
+                <h4 id="previewTag">Product Preview</h4>
+                <div id="photo_wrapper"></div>
+            </div>
             <button type="submit" id="addToCart" class="submit">Add to Cart</button>
         </section>
     </main>
@@ -76,6 +88,7 @@
             <img src="https://i.imgur.com/OKAY6Fl.png" alt="edyoda-projects-logo">
         </div>
     </footer>
+    <script src="/js/base.js"></script>
     <script src="/js/product.js"></script>
 </body>
 </html>

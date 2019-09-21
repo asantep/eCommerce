@@ -4,6 +4,12 @@ var cart_count = document.getElementById('cart_count');
 var total_amount = document.getElementById('total_amount');
 var place_order = document.getElementById('place_order');
 
+var productList = window.localStorage.getItem('product-list');
+productList = productList === null || productList === '' ? [] : productList;
+productList = productList.length > 0 ? JSON.parse(productList) : [];
+
+
+
 function createItemsNode(price,imgSrc,crdName,crdQty) {
     var totalItemsElement = document.createElement('div');
 
@@ -43,10 +49,10 @@ function createItemsNode(price,imgSrc,crdName,crdQty) {
     return totalItemsElement;
 }
 
-function addAmountNode(prices) {   
+function addAmountNode(prices,count) {   
     var sum = 0;
     for (var i = 0; i < prices.length; i++) {
-        sum += prices[i];
+        sum += (prices[i]*count);
     }
     return sum;
 }
@@ -59,8 +65,7 @@ function getCheckedoutItem() {
         if (this.readyState === 4) {
             if (this.status === 200) {
                 var responseText = JSON.parse(this.responseText);
-                total_qty.innerText = total_qty.innerText + "5";
-                cart_count.innerText = 5;
+                total_qty.innerText = total_qty.innerText + productList.length;
                 var prices = [];
                 var names = [];
                 var images = [];
@@ -70,13 +75,14 @@ function getCheckedoutItem() {
                 var isAccessory = [];
                 var size = [];
                 var id = [];
+                var count = 0;
                 var product_item = [];
-                for (let i = 2; i < 7; i++) {
-                    const element = responseText[i];          
+                for (let i = 0; i < productList.length; i++) {
+                    const element = productList[i];          
                     let item_name = element.name;
                     let item_img = element.preview;
                     let item_price = element.price;
-                    let item_qty = '1x';
+                    let item_qty = element.count;
                     prices.push(item_price);
                     names.push(item_name);
                     images.push(element.photos);
@@ -86,13 +92,14 @@ function getCheckedoutItem() {
                     isAccessory.push(element.isAccessory);
                     size.push(element.size);
                     id.push(element.id);
-                    product_item = [prices,names,images,preview,brand,description,isAccessory,size,id];                                       
-                    checkout.appendChild(createItemsNode(item_price,item_img,item_name,item_qty));                    
+                    count = item_qty;
+                    product_item = [prices,names,images,preview,brand,description,isAccessory,size,id,count];                                       
+                    checkout.appendChild(createItemsNode(item_price,item_img,item_name, "x"+item_qty));                    
                 }                
             } else {
                 console.log('Contact Administator, data unable to load');                
             }
-            total_amount.innerText = addAmountNode(prices);
+            total_amount.innerText = addAmountNode(prices,count);
             products.push(product_item);
         }
     };
